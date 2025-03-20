@@ -1,0 +1,9 @@
+# Node Modules
+node_modules/
+uploads/
+
+# Environment Variables
+.env
+
+# Build Files
+build/
