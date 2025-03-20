@@ -1,0 +1,48 @@
+/* Modern Gradient Background */
+body {
+  /* background: linear-gradient(to right, #2c3e50, #4ca1af);  */
+  background: linear-gradient(to right, #134e5e, #71b280);
+  color: white; /* Makes text stand out */
+  font-family: "Arial", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Make sections stand out */
+/* .section-container, .dashboard {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px); 
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 800px;
+  margin: 30px auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+} */
+
+/* Common button styling */
+button {
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+/* Improve text selection */
+::selection {
+  background: #4ca1af;
+  color: white;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Utility class for centering */
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

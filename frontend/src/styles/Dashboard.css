@@ -1,0 +1,76 @@
+/* Overall Page Styling */
+.dashboard {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 25px;
+    border-radius: 12px;
+    max-width: 900px;
+    margin: 40px auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  }
+  
+  /* Add Section Input & Button */
+  .add-section {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .add-section input {
+    border: 2px solid #4ca1af;
+    padding: 10px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    width: 60%;
+  }
+  
+  .add-section button {
+    padding: 10px 15px;
+    background: #4ca1af;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .add-section button:hover {
+    background: #35878f;
+  }
+  
+  .add-section input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* Section List */
+  .section-list {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .section {
+    display: block;
+    width: 80%;
+    max-width: 400px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 8px 0;
+    text-decoration: none;
+    color: white;
+    border: 2px solid #4ca1af;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+
+.section:hover {
+    background: #4ca1af;
+    color: white;
+}
+  
