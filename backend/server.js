@@ -16,6 +16,9 @@ app.use("/uploads", express.static("uploads"));
 // Connect Database
 connectDB();
 
+app.get("/", (req, res) => {
+    res.send("Backend is working!");
+});
 
 // Routes
 app.use("/api/sections", sectionRoutes);
