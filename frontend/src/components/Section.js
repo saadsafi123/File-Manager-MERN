@@ -56,11 +56,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/Section.css";
-import { FaEye, FaDownload, FaTrash } from "react-icons/fa";
+import { FaPen, FaDownload, FaTrash } from "react-icons/fa";
 
 const Section = ({ section, onBack }) => {
   const [files, setFiles] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [editingFileId, setEditingFileId] = useState(null);
+  const [newFilename, setNewFilename] = useState("");
 
   // Load files from backend
   useEffect(() => {
@@ -87,16 +89,35 @@ const Section = ({ section, onBack }) => {
 
   // Handle File Download
   const handleDownload = (file) => {
-    window.open(`http://localhost:5000/${file.filepath}`, "_blank");
+    window.open(`http://localhost:5000/uploads/${file.filename}`, "_blank");
   };
 
   // Handle File Delete
   const handleDelete = (fileId) => {
     axios.delete(`http://localhost:5000/api/files/delete/${fileId}`)
       .then(() => {
-        setFiles(files.filter(file => file._id !== fileId));
+        setFiles(prevFiles => prevFiles.filter(file => file._id !== fileId));
       })
       .catch(error => console.error("Error deleting file:", error));
+  };
+
+  // Handle Start Editing (Click on Edit Icon)
+  const handleEditStart = (file) => {
+    setEditingFileId(file._id);
+    setNewFilename(file.filename);
+  };
+
+  // Handle Save Edit (Update Filename)
+  const handleEditSave = (fileId) => {
+    axios.put(`http://localhost:5000/api/files/update/${fileId}`, { filename: newFilename })
+      .then(response => {
+        setFiles(prevFiles =>
+          prevFiles.map(file => (file._id === fileId ? response.data : file))
+        );
+        setEditingFileId(null);
+        setNewFilename("");
+      })
+      .catch(error => console.error("Error updating filename:", error));
   };
 
   return (
@@ -112,9 +133,21 @@ const Section = ({ section, onBack }) => {
       <ul className="file-list">
         {files.map(file => (
           <li key={file._id} className="file-item">
-            {file.filename}
+            {/* Show input field if editing, otherwise show filename */}
+            {editingFileId === file._id ? (
+              <input
+                type="text"
+                value={newFilename}
+                onChange={(e) => setNewFilename(e.target.value)}
+                onBlur={() => handleEditSave(file._id)}
+                autoFocus
+              />
+            ) : (
+              file.filename
+            )}
+
             <div className="file-actions">
-              <FaEye className="icon view-icon" onClick={() => window.open(`http://localhost:5000/${file.filepath}`, "_blank")} />
+              <FaPen className="icon edit-icon" onClick={() => handleEditStart(file)} />
               <FaDownload className="icon download-icon" onClick={() => handleDownload(file)} />
               <FaTrash className="icon delete-icon" onClick={() => handleDelete(file._id)} />
             </div>

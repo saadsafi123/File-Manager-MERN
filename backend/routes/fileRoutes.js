@@ -42,4 +42,76 @@ router.get("/:sectionId", async (req, res) => {
   }
 });
 
+// DELETE a file by ID
+router.delete("/delete/:id", async (req, res) => {
+  try {
+    const fileId = req.params.id;
+    console.log("Deleting file with ID:", fileId); // Debugging
+
+    const deletedFile = await File.findByIdAndDelete(fileId);
+    if (!deletedFile) {
+      return res.status(404).json({ message: "File not found" });
+    }
+
+    res.json({ message: "File deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting file:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+// Update filename by ID
+router.put("/update/:id", async (req, res) => {
+    try {
+      const { filename } = req.body;
+      const updatedFile = await File.findByIdAndUpdate(req.params.id, { filename }, { new: true });
+  
+      if (!updatedFile) {
+        return res.status(404).json({ message: "File not found" });
+      }
+  
+      res.json(updatedFile);
+    } catch (error) {
+      console.error("Error updating file:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  });
+
+  const fs = require("fs");
+const path = require("path");
+
+router.put("/update/:id", async (req, res) => {
+  try {
+    const { filename } = req.body;
+    const file = await File.findById(req.params.id);
+
+    if (!file) {
+      return res.status(404).json({ message: "File not found" });
+    }
+
+    const oldFilePath = file.filepath;
+    const fileExtension = path.extname(oldFilePath); // Get the original file extension
+    const newFilePath = path.join("uploads", filename + fileExtension); // New path with updated name
+
+    // Rename file in filesystem
+    fs.rename(oldFilePath, newFilePath, async (err) => {
+      if (err) {
+        console.error("Error renaming file:", err);
+        return res.status(500).json({ message: "Error renaming file on server" });
+      }
+
+      // Update database with new filename and filepath
+      file.filename = filename + fileExtension;
+      file.filepath = newFilePath;
+      await file.save();
+
+      res.json(file);
+    });
+  } catch (error) {
+    console.error("Error updating file:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+  
 module.exports = router;

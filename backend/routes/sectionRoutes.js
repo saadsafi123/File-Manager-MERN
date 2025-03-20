@@ -24,4 +24,22 @@ router.get("/", async (req, res) => {
   }
 });
 
+
+// Delete a section by ID
+router.delete("/delete/:id", async (req, res) => {
+  try {
+    const sectionId = req.params.id;
+    const deletedSection = await Section.findByIdAndDelete(sectionId);
+
+    if (!deletedSection) {
+      return res.status(404).json({ message: "Section not found" });
+    }
+
+    res.json({ message: "Section deleted successfully", deletedSection });
+  } catch (error) {
+    console.error("Error deleting section:", error);
+    res.status(500).json({ message: "Error deleting section" });
+  }
+});
+
 module.exports = router;

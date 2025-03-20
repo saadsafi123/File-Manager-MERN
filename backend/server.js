@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const connectDB = require("./config/db");
@@ -7,6 +8,8 @@ const fileRoutes = require("./routes/fileRoutes");
 require("dotenv").config();
 
 const app = express();
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Middleware
 app.use(cors());
@@ -25,7 +28,6 @@ app.use("/api/sections", sectionRoutes);
 app.use("/api/files", fileRoutes);
 
 
-const path = require("path");
 
 // Serve uploaded files statically
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));

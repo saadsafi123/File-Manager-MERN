@@ -42,6 +42,7 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { FaTrash } from "react-icons/fa";
 import "../styles/Dashboard.css";
 
 const Dashboard = ({ onSelectSection }) => {
@@ -67,6 +68,17 @@ const Dashboard = ({ onSelectSection }) => {
       .catch(error => console.error("Error adding section:", error));
   };
 
+  const handleDeleteSection = (sectionId) => {
+    if (!window.confirm("Are you sure you want to delete this section?")) return;
+  
+    axios.delete(`http://localhost:5000/api/sections/delete/${sectionId}`)
+      .then(() => {
+        setSections(sections.filter(section => section._id !== sectionId));
+        console.log("Section deleted successfully!");
+      })
+      .catch(error => console.error("Error deleting section:", error));
+  };
+  
   return (
     <div className="dashboard">
       <h2>Dashboard</h2>
@@ -81,11 +93,19 @@ const Dashboard = ({ onSelectSection }) => {
       </div>
       <div className="section-list">
         {sections.map(section => (
-          <button key={section._id} className="section" onClick={() => onSelectSection(section)}>
-            {section.name}
-          </button>
-        ))}
-      </div>
+            <div key={section._id} className="section-item">
+            <button className="section" onClick={() => onSelectSection(section)}>
+                {section.name}
+            </button>
+            <FaTrash
+                className="delete-icon"
+                onClick={() => handleDeleteSection(section._id)}
+            />
+    </div>
+  ))}
+</div>
+
+
     </div>
   );
 };

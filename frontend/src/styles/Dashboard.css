@@ -1,11 +1,13 @@
 /* Overall Page Styling */
 .dashboard {
+    text-align: center;
+    font-size: 1.5rem;
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(10px);
     color: white;
     padding: 25px;
     border-radius: 12px;
-    max-width: 900px;
+    max-width: 1000px;
     margin: 40px auto;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
   }
@@ -16,6 +18,7 @@
     display: flex;
     justify-content: center;
     gap: 10px;
+    /* margin-left: 5em; */
   }
   
   .add-section input {
@@ -24,7 +27,9 @@
     border-radius: 5px;
     background: rgba(255, 255, 255, 0.2);
     color: white;
-    width: 60%;
+    width: 70%;
+    height: 1.5rem;
+    font-size: 1.2rem;
   }
   
   .add-section button {
@@ -42,6 +47,7 @@
   }
   
   .add-section input::placeholder {
+
     color: rgba(255, 255, 255, 0.6);
   }
 
@@ -53,24 +59,55 @@
     align-items: center;
   }
   
-  .section {
-    display: block;
+  /* Each Section Item (Name + Delete Icon) */
+.section-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;  /* Ensures proper spacing */
     width: 80%;
-    max-width: 400px;
-    padding: 12px;
+    max-width: 500px;
+    padding: 8px;
     background: rgba(255, 255, 255, 0.2);
-    margin: 8px 0;
-    text-decoration: none;
-    color: white;
     border: 2px solid #4ca1af;
     border-radius: 8px;
-    text-align: center;
-    font-weight: bold;
-    transition: 0.3s;
-  }
+    margin: 8px 0;
+    transition: background 0.3s, border-color 0.3s;
+}
 
+
+.section-item:hover {
+    background: #4ca1af;
+    border-color: #35878f;
+}
+
+/* Section Name Button */
+.section {
+    flex-grow: 1;  /* Allows button to expand */
+    text-align: center;
+    background: transparent;
+    border: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 12px;
+    
+}
+/* 
 .section:hover {
     background: #4ca1af;
     color: white;
-}
+} */
   
+.delete-icon {
+    color: red;
+    font-size: 20px;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  
+  .delete-icon:hover {
+    color: darkred;
+  }
+  
+
