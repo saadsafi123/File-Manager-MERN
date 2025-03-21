@@ -11,8 +11,7 @@ const storage = multer.diskStorage({
     cb(null, "uploads/"); // Save files in 'uploads' folder
   },
   filename: (req, file, cb) => {
-    const uniqueName = Date.now() + "-" + file.originalname;
-    cb(null, uniqueName);
+    cb(null, file.originalname); 
   },
 });
 
@@ -83,8 +82,10 @@ router.put("/update/:id", async (req, res) => {
     }
 
     const oldFilePath = file.filepath;
-    const fileExtension = path.extname(oldFilePath); // Get the original file extension
-    const newFilePath = path.join("uploads", filename + fileExtension); // New path with updated name
+    const fileExtension = path.extname(file.filename); // Get original extension
+    const newFilename = filename + fileExtension; // Ensure extension remains
+
+    const newFilePath = path.join("uploads", newFilename); // Keep new filename in uploads
 
     // Rename file in filesystem
     fs.rename(oldFilePath, newFilePath, async (err) => {
@@ -93,8 +94,8 @@ router.put("/update/:id", async (req, res) => {
         return res.status(500).json({ message: "Error renaming file on server" });
       }
 
-      // Update database with new filename and filepath
-      file.filename = filename + fileExtension;
+      // Update filename & filepath in database
+      file.filename = newFilename;
       file.filepath = newFilePath;
       await file.save();
 
@@ -105,6 +106,7 @@ router.put("/update/:id", async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
 
   
 module.exports = router;

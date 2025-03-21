@@ -102,13 +102,14 @@ const Section = ({ section, onBack }) => {
   };
 
   // Handle Start Editing (Click on Edit Icon)
-  const handleEditStart = (file) => {
-    setEditingFileId(file._id);
-  
-    // Remove ID & extract filename without extension
-    const cleanName = file.filename.split("-").slice(1).join("-").split(".").slice(0, -1).join(".");
-    setNewFilename(cleanName);
-  };
+const handleEditStart = (file) => {
+  setEditingFileId(file._id);
+
+  // Extract filename without extension
+  const cleanName = file.filename.replace(/\.[^/.]+$/, ""); // Removes last extension
+  setNewFilename(cleanName);
+};
+
   // Handle Save Edit (Update Filename)
   const handleEditSave = (fileId) => {
     
@@ -147,9 +148,7 @@ const Section = ({ section, onBack }) => {
               />
             ) : (
               <span>
-                {file.filename.includes("-") 
-                  ? file.filename.split("-").slice(1).join("-")  // Removes ID prefix
-                  : file.filename}
+                {file.filename}
               </span>
 
             )}
