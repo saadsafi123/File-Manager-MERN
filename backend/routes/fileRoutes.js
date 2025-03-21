@@ -2,6 +2,8 @@ const express = require("express");
 const multer = require("multer");
 const File = require("../models/File");
 const router = express.Router();
+const fs = require("fs");
+const path = require("path");
 
 // Multer storage config
 const storage = multer.diskStorage({
@@ -9,7 +11,8 @@ const storage = multer.diskStorage({
     cb(null, "uploads/"); // Save files in 'uploads' folder
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname);
+    const uniqueName = Date.now() + "-" + file.originalname;
+    cb(null, uniqueName);
   },
 });
 
@@ -21,13 +24,14 @@ router.post("/upload", upload.single("file"), async (req, res) => {
     const { sectionId } = req.body;
     const file = new File({
       sectionId,
-      filename: req.file.originalname,
+      filename: req.file.filename,
       filepath: req.file.path,
     });
 
     await file.save();
     res.status(201).json(file);
   } catch (error) {
+        console.error("File upload error:", error);
     res.status(500).json({ message: "File upload failed" });
   }
 });
@@ -52,7 +56,13 @@ router.delete("/delete/:id", async (req, res) => {
     if (!deletedFile) {
       return res.status(404).json({ message: "File not found" });
     }
-
+    // Delete file from storage
+    fs.unlink(path.resolve(deletedFile.filepath), (err) => {
+        if (err) {
+          console.error("Error deleting file from storage:", err);
+        }
+      });
+      
     res.json({ message: "File deleted successfully" });
   } catch (error) {
     console.error("Error deleting file:", error);
@@ -61,24 +71,7 @@ router.delete("/delete/:id", async (req, res) => {
 });
 
 // Update filename by ID
-router.put("/update/:id", async (req, res) => {
-    try {
-      const { filename } = req.body;
-      const updatedFile = await File.findByIdAndUpdate(req.params.id, { filename }, { new: true });
-  
-      if (!updatedFile) {
-        return res.status(404).json({ message: "File not found" });
-      }
-  
-      res.json(updatedFile);
-    } catch (error) {
-      console.error("Error updating file:", error);
-      res.status(500).json({ message: "Internal Server Error" });
-    }
-  });
 
-  const fs = require("fs");
-const path = require("path");
 
 router.put("/update/:id", async (req, res) => {
   try {

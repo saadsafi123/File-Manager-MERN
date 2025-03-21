@@ -14,7 +14,6 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
-app.use("/uploads", express.static("uploads"));
 
 // Connect Database
 connectDB();

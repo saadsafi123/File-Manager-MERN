@@ -92,15 +92,15 @@ const Dashboard = ({ onSelectSection }) => {
         <button onClick={handleAddSection}>Add Section</button>
       </div>
       <div className="section-list">
-        {sections.map(section => (
-            <div key={section._id} className="section-item">
-            <button className="section" onClick={() => onSelectSection(section)}>
-                {section.name}
-            </button>
-            <FaTrash
-                className="delete-icon"
-                onClick={() => handleDeleteSection(section._id)}
-            />
+  {sections.map(section => (
+    <div key={section._id} className="section-item">
+      <button className="section" onClick={() => onSelectSection(section)}>
+        {section.name}
+      </button>
+      <FaTrash
+        className="delete-icon"
+        onClick={() => handleDeleteSection(section._id)}
+      />
     </div>
   ))}
 </div>

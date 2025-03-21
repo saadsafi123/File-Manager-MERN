@@ -89,7 +89,7 @@ const Section = ({ section, onBack }) => {
 
   // Handle File Download
   const handleDownload = (file) => {
-    window.open(`http://localhost:5000/uploads/${file.filename}`, "_blank");
+    window.open(`http://localhost:5000/${file.filepath}`, "_blank");
   };
 
   // Handle File Delete
@@ -104,11 +104,14 @@ const Section = ({ section, onBack }) => {
   // Handle Start Editing (Click on Edit Icon)
   const handleEditStart = (file) => {
     setEditingFileId(file._id);
-    setNewFilename(file.filename);
+  
+    // Remove ID & extract filename without extension
+    const cleanName = file.filename.split("-").slice(1).join("-").split(".").slice(0, -1).join(".");
+    setNewFilename(cleanName);
   };
-
   // Handle Save Edit (Update Filename)
   const handleEditSave = (fileId) => {
+    
     axios.put(`http://localhost:5000/api/files/update/${fileId}`, { filename: newFilename })
       .then(response => {
         setFiles(prevFiles =>
@@ -143,7 +146,12 @@ const Section = ({ section, onBack }) => {
                 autoFocus
               />
             ) : (
-              file.filename
+              <span>
+                {file.filename.includes("-") 
+                  ? file.filename.split("-").slice(1).join("-")  // Removes ID prefix
+                  : file.filename}
+              </span>
+
             )}
 
             <div className="file-actions">
